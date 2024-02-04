@@ -1,0 +1,78 @@
+{
+    "idade": {
+        "18 - 23": "18-23",
+        "24 - 29": "24-29",
+        "30 - 34": "30-34",
+        "+34": "+34"
+    },
+    "genero": {
+        "Masculino": "masculino",
+        "Feminino": "feminino",
+        "Outros": "outro"
+    },
+    "periodo": {
+        "1° Período": "1",
+        "2° Período": "2",
+        "3° Período": "3",
+        "4° Período": "4",
+        "5° Período": "5",
+        "6° Período": "6",
+        "7° Período": "7",
+        "8° Período": "8"
+    },
+    "dieta": {
+        "Dieta com proteína animal (carnes, leite e ovos)": "omnivoro",
+        "Dieta vegetariana": "vegetariano",
+        "Dieta vegana": "vegano"
+    },
+    "frequenta":{
+        "Sim": "sim",
+        "Não": "nao"
+    },
+    "frequencia": {
+        "almoco": {
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5
+        },
+        "janta": {
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5
+        }
+    },
+    "vegetariano": {
+        "Sim": "sim",
+        "Não": "nao"
+    },
+    "qualidade": {
+        "Ruim": "ruim",
+        "Razoável": "razoavel",
+        "Boa": "boa",
+        "Ótima": "otima"
+    },
+    "preco": {
+        "Acessível": "acessivel",
+        "Caro": "caro"
+    },
+    "porque": {
+        "Não moro em Ouro Preto": "nao_moro",
+        "Horário de trabalho incompatível": "trabalho",
+        "Não gosto  do cardápio": "cardapio",
+        "Restrições alimentares": "restricoes",
+        "Outros": "outros"
+    },
+    "como": {
+        "Cozinho em casa": "casa",
+        "Frequento restaurantes/lanchonetes/rotisseria da cidade onde moro": "restaurantes",
+        "Refeições oferecidas no trabalho/Empresa": "trabalho",
+        "Peço almoço e/ou jantar em aplicativos": "aplicativos",
+        "Outros": "outros"
+    }
+}

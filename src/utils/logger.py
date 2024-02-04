@@ -1,55 +1,65 @@
-from rich.console import Console
-from rich.theme import Theme
-from .timestamp import gen_timestamp
+from .timestamp import get_timestamp
+
+
+log_levels = {
+    'debug': 'dbg',
+    'info': 'inf',
+    'warning': 'wrn',
+    'error': 'err',
+    'critical': 'crt',
+}
+
+enum_level = {
+    "dbg": 1,
+    "inf": 2,
+    "wrn": 3,
+    "err": 4,
+    "crt": 5,
+    "unk": 6
+}
 
 class Logger:
-    leveldict = {
-            "fatal": 0,
-            "error": 1,
-            "warn": 2,
-            "info": 3,
-            "debug": 4
-        }
-
-    def __init__(self, name, color, loglevel=3):
+    def __init__(self, name, color, level=2):
         self.name = name
-        self.theme = Theme({
-            "fatal": "bold #003049",
-            "error": "bold #D62828",
-            "warn": "bold #F77F00",
-            "info": "bold #FCBF49",
-            "debug": "bold #EAE2B7",
-            "name": f"bold {color}",
-            "text": "#F5F2E3",
-            "debugtext": "dim #F5F2E3",
-        })
-        self.console = Console(theme=self.theme)
-        self.currentlevel = loglevel
-        self.log("debug", "Logger initialized")
-
-    def log(self, level, *args):
-        level = self.leveldict[level.lower()]
-        timestamp = gen_timestamp()
+        self.color = self._hex_to_rgb(color)
+        self.locklevel = level
+    
+    def log(self, level, text):
+        try:
+            level = log_levels[level.lower()]
+        except:
+            level = 'unk'
+        
+        if  self.locklevel > enum_level[level]:
+            return
+        
+        
+        message = ""
 
         match level:
-            case 0:
-                prefix = f"{timestamp} [fatal]FTL[/fatal] @ [name]{self.name}[/name]:"
-            case 1:
-                prefix = f"{timestamp} [error]ERR[/error] @ [name]{self.name}[/name]:"
-            case 2:
-                prefix = f"{timestamp} [warn]WRN[/warn] @ [name]{self.name}[/name]:"
-            case 3:
-                prefix = f"{timestamp} [info]INF[/info] @ [name]{self.name}[/name]:"
-            case 4:
-                prefix = f"{timestamp} [debug]DBG[/debug] @ [name]{self.name}[/name]:"
+            case 'dbg':
+                message = f"{self.colorize('#EDFBFF', get_timestamp())} {self.colorize('#335C67', level)} @ {self.colorize(self.color, self.name)}: {self.colorize('#E6E6E6', text)}"
+            case 'inf':
+                message = f"{self.colorize('#EDFBFF', get_timestamp())} {self.colorize('#FFF3B0', level)} @ {self.colorize(self.color, self.name)}: {self.colorize('#E6E6E6', text)}"
+            case 'wrn':
+                message = f"{self.colorize('#EDFBFF', get_timestamp())} {self.colorize('#E09F3E', level)} @ {self.colorize(self.color, self.name)}: {self.colorize('#E6E6E6', text)}"
+            case 'err':
+                message = f"{self.colorize('#EDFBFF', get_timestamp())} {self.colorize('#9E2A2B', level)} @ {self.colorize(self.color, self.name)}: {self.colorize('#E6E6E6', text)}"
+            case 'crt':
+                message = f"{self.colorize('#EDFBFF', get_timestamp())} {self.colorize('#540B0E', level)} @ {self.colorize(self.color, self.name)}: {self.colorize('#E6E6E6', text)}"
+            case _:
+                message = f"{self.colorize('#EDFBFF', get_timestamp())} {self.colorize('#EDFBFF', 'unk')} @ {self.colorize(self.color, self.name)}: {self.colorize('#E6E6E6', text)}"
 
-        if level <= self.currentlevel:
-            if level < 4:
-                self.console.print(prefix, f"[text]{' '.join([*args])}[/text]")
-            else:
-                self.console.print(prefix, f"[debugtext]{' '.join([*args])}[/debugtext]")
-    
-    def set_level(self, level):
-        self.currentlevel = level
-        self.log("debug", f"Log level set to {level}")
-        
+        print(message)
+
+        # print(f"{self.colorize("", get_timestamp())} {self.colorize("", level)} @ {self.colorize(self.color, self.name)}: {message}")
+
+
+    def colorize(self, color, text):
+        if type(color) == str:
+            color = self._hex_to_rgb(color)
+        return f"\033[38;2;{';'.join(str(i) for i in color)}m{text}\033[0m"
+
+    def _hex_to_rgb(self, hex_code):
+        hex_code = hex_code.lstrip('#')
+        return tuple(int(hex_code[i:i+2], 16) for i in (0, 2, 4))
